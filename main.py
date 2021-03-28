@@ -147,7 +147,7 @@ class Page2(BasePage):
     def widget_subframe(self):
         self.sub_frame.place(x=189, y=20)
         self.sub_title.grid(row=0, column=0, pady=10)
-        self.list_time.grid(row=1, column=0) 
+        self.list_time.grid(row=1, column=0)
         self.add_time.grid(row=2, column=0, sticky='w')
         self.scrollbar.grid(row=1, column=1, sticky='ns')
 
@@ -198,10 +198,9 @@ class SetTime:
 
     def submit_click(self, e):
         time_set = f'{self.h_time.get()}:{self.m_time.get()}'
-        print(time_set) 
-        PutInfoPage.list_time.insert(END,time_set)
-        self.pop_time.destroy() 
-
+        print(time_set)
+        PutInfoPage.list_time.insert(END, time_set)
+        self.pop_time.destroy()
 
 
 class SignUp(BasePage):
