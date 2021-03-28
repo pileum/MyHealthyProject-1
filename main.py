@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 from tkinter import *
 from ShowError import *
 from datetime import datetime
-"""This write from Github"""
 
 def Sign_up():
     sign_page = SignUp()
@@ -104,11 +103,6 @@ class Page2(BasePage):
                       'heightvar': {'pos': (33, 211), 'size': (130, 39), 'var': StringVar()}
                       }
         self.sub_title = Label(self.sub_frame, text='การแจ้งเตือนยา', font=15)
-        self.add_time = Button(
-            self.sub_frame, text='เพิ่มเวลาแจ้งเตือน', font=15)
-            self.sub_frame, text='เพิ่มเวลาแจ้งเตือน', font=15, command=self.func_add_time)
-        self.sub_frame, text='เพิ่มเวลาแจ้งเตือน', font=15)
-        self.sub_frame, text='เพิ่มเวลาแจ้งเตือน', font=15, command=self.func_add_time)
         self.add_time = Button(self.sub_frame, text='เพิ่มเวลาแจ้งเตือน', font=15, command=self.func_add_time)
         self.list_time = Listbox(self.sub_frame, height=10, width=40, font=15)
         self.bmi_result = Label(self.Frame, bg='white', font='20')
