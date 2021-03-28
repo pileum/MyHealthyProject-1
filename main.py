@@ -5,11 +5,6 @@ from tkinter import ttk
 from datetime import datetime
 
 
-# def Sign_up():
-#     sign_page = SignUp()
-#     sign_page.run
-
-
 def on_click(e):
     global index
     if e.widget['text'] == 'Back':
@@ -198,7 +193,6 @@ class SetTime:
 
     def submit_click(self, e):
         time_set = f'{self.h_time.get()}:{self.m_time.get()}'
-        print(time_set)
         PutInfoPage.list_time.insert(END, time_set)
         self.pop_time.destroy()
 
