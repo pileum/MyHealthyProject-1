@@ -144,8 +144,6 @@ class Page2(BasePage):
         self.sub_frame.place(x=189, y=20)
         self.list_time.grid(row=1, columnspan=2)
         self.add_time.grid(row=2, column=0, sticky='w')
-    # def func_add_time(self):
-        
 
     def func_add_time(self):
         pop_time = Toplevel(height=356, width=536)
