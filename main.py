@@ -229,6 +229,8 @@ class SignUp(BasePage):
 
 root = Tk()
 root.title(f'เม่าแบก {datetime.today().strftime("%d/%m/%y")}')
+root.title(
+    f'เม่าแบก {datetime.today().strftime("%d/%m/%y")} {datetime.today().strftime("%H:%M:%S")}')
 root.minsize(600, 500)
 root.maxsize(600, 500)
 LoginPage = Page1(root)
