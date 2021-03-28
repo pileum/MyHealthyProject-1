@@ -1,13 +1,13 @@
 from abc import ABC, abstractmethod
 from tkinter import *
-from ShowError import * 
+from ShowError import *
 from tkinter import ttk
 from datetime import datetime
 
 
-def Sign_up():
-    sign_page = SignUp()
-    sign_page.run
+# def Sign_up():
+#     sign_page = SignUp()
+#     sign_page.run
 
 
 def on_click(e):
@@ -17,7 +17,7 @@ def on_click(e):
         index -= 1
         all_page[index].pack()
     elif e.widget['text'] == 'Sign up':
-        Sign_up()
+        lambda: SignUp().run
 
 
 def command_on_click():
@@ -107,11 +107,16 @@ class Page2(BasePage):
         self.bmi_result = Label(self.Frame, bg='white', font='20')
         self.submit_btn = Button(self.Frame, text='SUBMIT', font='18')
         self.back_btn = Button(self.Frame, text='Back', font='18')
-        self.sub_title = Label(self.sub_frame, text='การแจ้งเตือนยา', font='Helvetica 15')
-        self.add_time = Button(self.sub_frame, text='เพิ่มเวลาแจ้งเตือน', font='Helvetica 15', command=self.func_add_time)
-        self.list_time = Listbox(self.sub_frame, height=5, width=40, font='Helvetica 15') 
-        self.scrollbar = Scrollbar(self.sub_frame,command=self.list_time.yview)
+        self.sub_title = Label(
+            self.sub_frame, text='การแจ้งเตือนยา', font='Helvetica 15')
+        self.add_time = Button(self.sub_frame, text='เพิ่มเวลาแจ้งเตือน',
+                               font='Helvetica 15', command=lambda:  SetTime().run)
+        self.list_time = Listbox(
+            self.sub_frame, height=5, width=40, font='Helvetica 15')
+        self.scrollbar = Scrollbar(
+            self.sub_frame, command=self.list_time.yview)
         self.list_time['yscrollcommand'] = self.scrollbar.set
+
     def widget(self):
         for label in self.Label:
             Label(self.Frame, text=label, font=self.Label[label]['font']).place(
@@ -139,46 +144,62 @@ class Page2(BasePage):
             self.Entry['heightvar']['var'].get()) % 100 != 0 else int(self.Entry['heightvar']['var'].get())
         self.bmi_result['text'] = format(weight/((height/100)**2), '.2f')
 
-    def widget_subframe(self): 
+    def widget_subframe(self):
         self.sub_frame.place(x=189, y=20)
-        self.sub_title.grid(row=0, column=0,pady=10)
+        self.sub_title.grid(row=0, column=0, pady=10)
         self.list_time.grid(row=1, column=0)
-        self.add_time.grid(row=2, column=0, sticky='w') 
-        self.scrollbar.grid(row=1,column=1,sticky='ns')
+        self.add_time.grid(row=2, column=0, sticky='w')
+        self.scrollbar.grid(row=1, column=1, sticky='ns')
 
-    def func_add_time(self):
-        pop_time = Toplevel(height=356, width=536)
-        sub_label = {'การแจ้งเตือนยา': {'pos': (175, 9), 'size': (171, 31), 'font': 18},
-                     'โรคประจำตัว': {'pos': (24, 58), 'size': (110, 34), 'font': 16},
-                     'เวลาทานยา': {'pos': (319, 58), 'size': (118, 29), 'font': 16},
-                     'ชื่อยา': {'pos': (25, 138), 'size': (61, 29), 'font': 16},
-                     'ปริมาณยาที่ทาน': {'pos': (24, 230), 'size': (159, 29), 'font': 16},
-                     'mg': {'pos': (192, 268), 'size': (53, 29), 'font': 16}}
-        sub_entry = {'โรค': {'pos': (30, 90), 'size': (205, 35), 'var': StringVar()},
-                     'ชื่อยา': {'pos': (29, 170), 'size': (285, 35), 'var': StringVar()},
-                     'ปริมานยา': {'pos': (30, 262), 'size': (104, 35), 'var': IntVar()}
-                     }
-        sub_submit_btn = Button(pop_time, text='SUBMIT',font='Helvetica 18'
-                                ,command=lambda: pop_time.destroy())
-        sub_submit_btn.place(x=324, y=252, width=171, height=45)
-        self.h_time = ttk.Combobox(pop_time,values=list(f'0{i}' if i<10 else i for i in range(0,24)),font='Helvetica 14')
-        self.m_time = ttk.Combobox(pop_time,values=list(f'0{i}' if i<10 else i for i in range(0,60)),font='Helvetica 14') 
-        self.h_time.current(0) 
-        self.m_time.current(0) 
-        self.h_time.place(x=324,y=90,width=65,height=30)
-        self.m_time.place(x=395,y=90,width=65,height=30)
-        for label in sub_label:
-            Label(pop_time, text=label, font='Helvetica {}'.format(sub_label[label]['font'])).place(
-                x=sub_label[label]['pos'][0],
-                y=sub_label[label]['pos'][1],
-                width=sub_label[label]['size'][0],
-                height=sub_label[label]['size'][1])
-        for entry in sub_entry:
-            Entry(pop_time, textvariable=sub_entry[entry]['var'], font='Helvetica 14', width=20).place(
-                x=sub_entry[entry]['pos'][0],
-                y=sub_entry[entry]['pos'][1],
-                width=sub_entry[entry]['size'][0],
-                height=sub_entry[entry]['size'][1])
+
+class SetTime:
+    def __init__(self):
+        self.pop_time = Toplevel(height=356, width=536)
+        self.sub_label = {'การแจ้งเตือนยา': {'pos': (175, 9), 'size': (171, 31), 'font': 18},
+                          'โรคประจำตัว': {'pos': (24, 58), 'size': (110, 34), 'font': 16},
+                          'เวลาทานยา': {'pos': (319, 58), 'size': (118, 29), 'font': 16},
+                          'ชื่อยา': {'pos': (25, 138), 'size': (61, 29), 'font': 16},
+                          'ปริมาณยาที่ทาน': {'pos': (24, 230), 'size': (159, 29), 'font': 16},
+                          'mg': {'pos': (192, 268), 'size': (53, 29), 'font': 16}}
+        self.sub_entry = {'โรค': {'pos': (30, 90), 'size': (205, 35), 'var': StringVar()},
+                          'ชื่อยา': {'pos': (29, 170), 'size': (285, 35), 'var': StringVar()},
+                          'ปริมานยา': {'pos': (30, 262), 'size': (104, 35), 'var': IntVar()}
+                          }
+        self.sub_submit_btn = Button(
+            self.pop_time, text='SUBMIT', font='Helvetica 18')
+        self.sub_submit_btn.bind('<Button-1>', self.submit_click)
+        self.h_time = ttk.Combobox(self.pop_time, values=list(
+            f'0{i}' if i < 10 else i for i in range(0, 24)), font='Helvetica 14', state='readonly')
+        self.m_time = ttk.Combobox(self.pop_time, values=list(
+            f'0{i}' if i < 10 else i for i in range(0, 60)), font='Helvetica 14', state='readonly')
+
+    def widget(self):
+        self.h_time.current(0)
+        self.m_time.current(0)
+        self.sub_submit_btn.place(x=324, y=252, width=171, height=45)
+        self.h_time.place(x=324, y=90, width=65, height=30)
+        self.m_time.place(x=395, y=90, width=65, height=30)
+        for label in self.sub_label:
+            Label(self.pop_time, text=label, font='Helvetica {}'.format(self.sub_label[label]['font'])).place(
+                x=self.sub_label[label]['pos'][0],
+                y=self.sub_label[label]['pos'][1],
+                width=self.sub_label[label]['size'][0],
+                height=self.sub_label[label]['size'][1])
+        for entry in self.sub_entry:
+            Entry(self.pop_time, textvariable=self.sub_entry[entry]['var'], font='Helvetica 14', width=20).place(
+                x=self.sub_entry[entry]['pos'][0],
+                y=self.sub_entry[entry]['pos'][1],
+                width=self.sub_entry[entry]['size'][0],
+                height=self.sub_entry[entry]['size'][1])
+
+    @property
+    def run(self):
+        self.widget()
+
+    def submit_click(self, e):
+        time_set = f'{self.h_time.get()}:{self.m_time.get()}'
+        print(time_set)
+        self.pop_time.destroy()
 
 
 class SignUp(BasePage):

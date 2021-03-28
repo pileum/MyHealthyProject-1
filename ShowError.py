@@ -23,12 +23,12 @@ def CheckLogin(user, password):
                                      'ชื่อ', 'นามสกุล', 'ชื่อผู้ใช้', 'รหัสผ่าน', 'เวลา', 'วัน/เดือน/ปี'])
             c = 0
             for i in d_login:
-                if user == i['ชื่อผู้ใช้'] and password == i['รหัสผ่าน']:
-                    c += 1
+                if user.replace(' ','') == i['ชื่อผู้ใช้'] and password.replace(' ','') == i['รหัสผ่าน']: 
+                    c += 1 
                     return True
             if c == 0:
                 raise Exception('User or Password not in Data login')
-    except:
+    except: 
         messagebox.showerror('Error', 'Invalid user or password')
 
 
