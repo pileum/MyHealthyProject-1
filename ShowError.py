@@ -5,7 +5,6 @@ import csv
 now = datetime.today()
 now_day = now.strftime("%d/%m/%Y")
 now_hours = now.strftime("%H:%M:%S")
-print('This change')
 
 def LessUserOrPassword(user, password, confirm):
     if len(user) < 8 or len(password) < 8 or len(confirm) < 8:
