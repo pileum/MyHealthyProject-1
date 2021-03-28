@@ -106,6 +106,7 @@ class Page2(BasePage):
         self.sub_title = Label(self.sub_frame, text='การแจ้งเตือนยา', font=15)
         self.add_time = Button(
             self.sub_frame, text='เพิ่มเวลาแจ้งเตือน', font=15)
+            self.sub_frame, text='เพิ่มเวลาแจ้งเตือน', font=15, command=self.func_add_time)
         self.list_time = Listbox(self.sub_frame, height=10, width=40, font=15)
         self.bmi_result = Label(self.Frame, bg='white', font='20')
         self.submit_btn = Button(self.Frame, text='SUBMIT', font='18')
@@ -129,6 +130,7 @@ class Page2(BasePage):
         self.submit_btn.bind('<Button-1>', self.bmi)
         self.back_btn.place(x=33, y=400, width=91, height=40)
         self.back_btn.bind('<Button-1>', on_click)
+        self.widget_subframe()
 
     def bmi(self, *args):
         weight = float(self.Entry['weightvar']['var'].get()) if float(
@@ -144,6 +146,34 @@ class Page2(BasePage):
         self.add_time.grid(row=2, column=0, sticky='w')
     # def func_add_time(self):
         
+
+    def func_add_time(self):
+        pop_time = Toplevel(height=356, width=536)
+        sub_label = {'การแจ้งเตือนยา': {'pos': (175, 9), 'size': (171, 31), 'font': 18},
+                     'โรคประจำตัว': {'pos': (24, 58), 'size': (110, 34), 'font': 16},
+                     'เวลาทานยา': {'pos': (319, 58), 'size': (118, 29), 'font': 16},
+                     'ชื่อยา': {'pos': (25, 138), 'size': (61, 29), 'font': 16},
+                     'ปริมาณยาที่ทาน': {'pos': (24, 230), 'size': (159, 29), 'font': 16},
+                     'mg': {'pos': (192, 268), 'size': (53, 29), 'font': 16}}
+        sub_entry = {'โรค': {'pos': (30, 90), 'size': (205, 35), 'var': StringVar()},
+                     'ชื่อยา': {'pos': (29, 170), 'size': (285, 35), 'var': StringVar()},
+                     'ปริมานยา': {'pos': (30, 262), 'size': (156, 35), 'var': IntVar()}
+                     }
+        sub_submit_btn = Button(pop_time, text='SUBMIT',
+                                command=lambda: pop_time.destroy())
+        sub_submit_btn.place(x=324, y=252, width=171, height=45)
+        for label in sub_label:
+            Label(pop_time, text=label, font='Helvetica {}'.format(sub_label[label]['font'])).place(
+                x=sub_label[label]['pos'][0],
+                y=sub_label[label]['pos'][1],
+                width=sub_label[label]['size'][0],
+                height=sub_label[label]['size'][1])
+        for entry in sub_entry:
+            Entry(pop_time, textvariable=sub_entry[entry]['var'], fg='red', font='Helvetica 14', width=20).place(
+                x=sub_entry[entry]['pos'][0],
+                y=sub_entry[entry]['pos'][1],
+                width=sub_entry[entry]['size'][0],
+                height=sub_entry[entry]['size'][1])
 
 
 class SignUp(BasePage):
