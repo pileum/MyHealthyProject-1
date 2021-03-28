@@ -22,7 +22,8 @@ myList.grid(row=0, column=0)
 scrollbar = Scrollbar(root, command=myList.yview)
 myList['yscrollcommand'] = scrollbar.set
 for i in range(1, 26):
-    myList.insert(END, f'Line : {i}')
+    myList.insert(END, f'Line :  {i}  | {i}') 
+    myList.insert(END,'')
 scrollbar.grid(row=0, column=1, sticky='ns')
 btn = Button(root, text='click', command=lambda: print(
     myList.get(myList.curselection()[0]))) 

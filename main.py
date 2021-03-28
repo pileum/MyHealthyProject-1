@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from tkinter import *
-from ShowError import *
+from ShowError import * 
+from tkinter import ttk
 from datetime import datetime
 
 
@@ -103,14 +104,14 @@ class Page2(BasePage):
         self.Entry = {'weightvar': {'pos': (33, 126), 'size': (130, 39), 'var': StringVar()},
                       'heightvar': {'pos': (33, 211), 'size': (130, 39), 'var': StringVar()}
                       }
-        self.sub_title = Label(self.sub_frame, text='การแจ้งเตือนยา', font=15)
-        self.add_time = Button(
-            self.sub_frame, text='เพิ่มเวลาแจ้งเตือน', font=15, command=self.func_add_time)
-        self.list_time = Listbox(self.sub_frame, height=10, width=40, font=15)
         self.bmi_result = Label(self.Frame, bg='white', font='20')
         self.submit_btn = Button(self.Frame, text='SUBMIT', font='18')
         self.back_btn = Button(self.Frame, text='Back', font='18')
-
+        self.sub_title = Label(self.sub_frame, text='การแจ้งเตือนยา', font='Helvetica 15')
+        self.add_time = Button(self.sub_frame, text='เพิ่มเวลาแจ้งเตือน', font='Helvetica 15', command=self.func_add_time)
+        self.list_time = Listbox(self.sub_frame, height=5, width=40, font='Helvetica 15') 
+        self.scrollbar = Scrollbar(self.sub_frame,command=self.list_time.yview)
+        self.list_time['yscrollcommand'] = self.scrollbar.set
     def widget(self):
         for label in self.Label:
             Label(self.Frame, text=label, font=self.Label[label]['font']).place(
@@ -138,11 +139,12 @@ class Page2(BasePage):
             self.Entry['heightvar']['var'].get()) % 100 != 0 else int(self.Entry['heightvar']['var'].get())
         self.bmi_result['text'] = format(weight/((height/100)**2), '.2f')
 
-    def widget_subframe(self):
-        self.sub_title.grid(row=0, columnspan=2)
+    def widget_subframe(self): 
         self.sub_frame.place(x=189, y=20)
-        self.list_time.grid(row=1, columnspan=2)
-        self.add_time.grid(row=2, column=0, sticky='w')
+        self.sub_title.grid(row=0, column=0,pady=10)
+        self.list_time.grid(row=1, column=0)
+        self.add_time.grid(row=2, column=0, sticky='w') 
+        self.scrollbar.grid(row=1,column=1,sticky='ns')
 
     def func_add_time(self):
         pop_time = Toplevel(height=356, width=536)
@@ -154,11 +156,17 @@ class Page2(BasePage):
                      'mg': {'pos': (192, 268), 'size': (53, 29), 'font': 16}}
         sub_entry = {'โรค': {'pos': (30, 90), 'size': (205, 35), 'var': StringVar()},
                      'ชื่อยา': {'pos': (29, 170), 'size': (285, 35), 'var': StringVar()},
-                     'ปริมานยา': {'pos': (30, 262), 'size': (156, 35), 'var': IntVar()}
+                     'ปริมานยา': {'pos': (30, 262), 'size': (104, 35), 'var': IntVar()}
                      }
-        sub_submit_btn = Button(pop_time, text='SUBMIT',
-                                command=lambda: pop_time.destroy())
+        sub_submit_btn = Button(pop_time, text='SUBMIT',font='Helvetica 18'
+                                ,command=lambda: pop_time.destroy())
         sub_submit_btn.place(x=324, y=252, width=171, height=45)
+        self.h_time = ttk.Combobox(pop_time,values=list(f'0{i}' if i<10 else i for i in range(0,24)),font='Helvetica 14')
+        self.m_time = ttk.Combobox(pop_time,values=list(f'0{i}' if i<10 else i for i in range(0,60)),font='Helvetica 14') 
+        self.h_time.current(0) 
+        self.m_time.current(0) 
+        self.h_time.place(x=324,y=90,width=65,height=30)
+        self.m_time.place(x=395,y=90,width=65,height=30)
         for label in sub_label:
             Label(pop_time, text=label, font='Helvetica {}'.format(sub_label[label]['font'])).place(
                 x=sub_label[label]['pos'][0],
@@ -166,7 +174,7 @@ class Page2(BasePage):
                 width=sub_label[label]['size'][0],
                 height=sub_label[label]['size'][1])
         for entry in sub_entry:
-            Entry(pop_time, textvariable=sub_entry[entry]['var'], fg='red', font='Helvetica 14', width=20).place(
+            Entry(pop_time, textvariable=sub_entry[entry]['var'], font='Helvetica 14', width=20).place(
                 x=sub_entry[entry]['pos'][0],
                 y=sub_entry[entry]['pos'][1],
                 width=sub_entry[entry]['size'][0],
