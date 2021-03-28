@@ -109,6 +109,7 @@ class Page2(BasePage):
             self.sub_frame, text='เพิ่มเวลาแจ้งเตือน', font=15, command=self.func_add_time)
         self.sub_frame, text='เพิ่มเวลาแจ้งเตือน', font=15)
         self.sub_frame, text='เพิ่มเวลาแจ้งเตือน', font=15, command=self.func_add_time)
+        self.add_time = Button(self.sub_frame, text='เพิ่มเวลาแจ้งเตือน', font=15, command=self.func_add_time)
         self.list_time = Listbox(self.sub_frame, height=10, width=40, font=15)
         self.bmi_result = Label(self.Frame, bg='white', font='20')
         self.submit_btn = Button(self.Frame, text='SUBMIT', font='18')
