@@ -112,7 +112,7 @@ class Page2(BasePage):
         self.add_time = Button(self.sub_frame, text='เพิ่มเวลาแจ้งเตือน',
                                font='Helvetica 15', command=lambda:  SetTime().run)
         self.list_time = Listbox(
-            self.sub_frame, height=5, width=40, font='Helvetica 15')
+            self.sub_frame, height=5, width=30, font='Helvetica 15')
         self.scrollbar = Scrollbar(
             self.sub_frame, command=self.list_time.yview)
         self.list_time['yscrollcommand'] = self.scrollbar.set
@@ -147,7 +147,7 @@ class Page2(BasePage):
     def widget_subframe(self):
         self.sub_frame.place(x=189, y=20)
         self.sub_title.grid(row=0, column=0, pady=10)
-        self.list_time.grid(row=1, column=0)
+        self.list_time.grid(row=1, column=0) 
         self.add_time.grid(row=2, column=0, sticky='w')
         self.scrollbar.grid(row=1, column=1, sticky='ns')
 
@@ -198,8 +198,10 @@ class SetTime:
 
     def submit_click(self, e):
         time_set = f'{self.h_time.get()}:{self.m_time.get()}'
-        print(time_set)
-        self.pop_time.destroy()
+        print(time_set) 
+        PutInfoPage.list_time.insert(END,time_set)
+        self.pop_time.destroy() 
+
 
 
 class SignUp(BasePage):
