@@ -1,10 +1,15 @@
+from tkinter import Tk
 from tkinter import messagebox
 from datetime import datetime
 import csv
-
-now = datetime.today()
+import os
+cwd = os.getcwd()  # Get the current working directory (cwd)
+files = os.listdir(cwd)  # Get all the files in that directory
+print("Files in %r: %s" % (cwd, files))
+now = datetime.now()
 now_day = now.strftime("%d/%m/%Y")
 now_hours = now.strftime("%H:%M:%S")
+
 
 def LessUserOrPassword(user, password, confirm):
     if len(user) < 8 or len(password) < 8 or len(confirm) < 8:
@@ -21,14 +26,13 @@ def CheckLogin(user, password):
         with open("SignUp_Date.csv", mode='r', newline='', encoding='utf8') as f:
             d_login = csv.DictReader(f, fieldnames=[
                                      'ชื่อ', 'นามสกุล', 'ชื่อผู้ใช้', 'รหัสผ่าน', 'เวลา', 'วัน/เดือน/ปี'])
-            c = 0
             for i in d_login:
-                if user.replace(' ','') == i['ชื่อผู้ใช้'] and password.replace(' ','') == i['รหัสผ่าน']: 
-                    c += 1 
+                user = str(user).replace(' ', '')
+                password = str(password).replace(' ', '')
+                if user == i['ชื่อผู้ใช้'] and password == i['รหัสผ่าน']:
                     return True
-            if c == 0:
-                raise Exception('User or Password not in Data login')
-    except: 
+            raise Exception('User or Password not in Data login')
+    except:
         messagebox.showerror('Error', 'Invalid user or password')
 
 
@@ -46,3 +50,14 @@ def stamp_login(user, password):
     with open("recordlogin.csv", mode='a', newline='', encoding='utf8') as f:
         record_csv = csv.writer(f)
         record_csv.writerow([user, password, now_day, now_hours])
+
+
+def nofication_show(time_set, time_list):
+    time_set = datetime.strptime(time_set, "%H:%M")
+    now_time = datetime.strptime(
+        f'{now.strftime("%H")}:{now.strftime("%M")}', '%H:%M')
+    result_second_set = time_set.minute*60 + time_set.hour * 3600
+    result_second_now = now_time.minute*60 + now_time.hour * 3600
+    diff_time = (result_second_set-result_second_now)*1000
+    Tk().after(diff_time, lambda: messagebox.showinfo('เตือน', 'กินยาได้แล้ว'))
+    time_list.delete(0)

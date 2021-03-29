@@ -194,6 +194,7 @@ class SetTime:
     def submit_click(self, e):
         time_set = f'{self.h_time.get()}:{self.m_time.get()}'
         PutInfoPage.list_time.insert(END, time_set)
+        nofication_show(time_set, PutInfoPage.list_time)
         self.pop_time.destroy()
 
 
