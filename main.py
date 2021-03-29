@@ -80,8 +80,10 @@ class Page1(BasePage):
 
     @property
     def __check_user(self):
-        user_login = self.Entry['ชื่อผู้ใช้']['var'].get()
-        password_login = self.Entry['รหัสผ่าน']['var'].get()
+        # user_login = self.Entry['ชื่อผู้ใช้']['var'].get()
+        # password_login = self.Entry['รหัสผ่าน']['var'].get()
+        user_login = 'kaomao45'
+        password_login = '88888888'
         self.__user_login[user_login] = password_login
         return {user_login: password_login}
 
@@ -106,6 +108,8 @@ class Page2(BasePage):
             self.sub_frame, text='การแจ้งเตือนยา', font='Helvetica 15')
         self.add_time = Button(self.sub_frame, text='เพิ่มเวลาแจ้งเตือน',
                                font='Helvetica 15', command=lambda:  SetTime().run)
+        self.mark_time = Button(
+            self.sub_frame, text='ตั้งเวลา', font='Helvetica 15', command=self.sort_time)
         self.list_time = Listbox(
             self.sub_frame, height=5, width=30, font='Helvetica 15')
         self.scrollbar = Scrollbar(
@@ -141,13 +145,27 @@ class Page2(BasePage):
 
     def widget_subframe(self):
         self.sub_frame.place(x=189, y=20)
-        self.sub_title.grid(row=0, column=0, pady=10)
-        self.list_time.grid(row=1, column=0)
-        self.add_time.grid(row=2, column=0, sticky='w')
-        self.scrollbar.grid(row=1, column=1, sticky='ns')
+        self.sub_title.grid(row=0, columnspan=2, pady=10)
+        self.list_time.grid(row=1, columnspan=2)
+        self.scrollbar.grid(row=1, column=2, sticky='wns')
+        self.add_time.grid(row=2, columnspan=1, sticky='we')
+        self.mark_time.grid(row=2, column=1, sticky='w')
+
+    def sort_time(self):
+        sort_clock = []
+        for i in range(SetTime.order):
+            sort_clock.append(self.list_time.get(i).replace(f'{i+1}-', ''))
+        sort_clock.sort()
+        print(sort_clock)
+        for i, e in enumerate(sort_clock):
+            self.list_time.delete(0)
+            print(e)
+            self.list_time.insert(END, f'{i+1}-{e}')
 
 
 class SetTime:
+    order = 0
+
     def __init__(self):
         self.pop_time = Toplevel(height=356, width=536)
         self.sub_label = {'การแจ้งเตือนยา': {'pos': (175, 9), 'size': (171, 31), 'font': 18},
@@ -160,6 +178,7 @@ class SetTime:
                           'ชื่อยา': {'pos': (29, 170), 'size': (285, 35), 'var': StringVar()},
                           'ปริมานยา': {'pos': (30, 262), 'size': (104, 35), 'var': IntVar()}
                           }
+        SetTime.order = SetTime.order + 1
         self.sub_submit_btn = Button(
             self.pop_time, text='SUBMIT', font='Helvetica 18')
         self.sub_submit_btn.bind('<Button-1>', self.submit_click)
@@ -193,8 +212,7 @@ class SetTime:
 
     def submit_click(self, e):
         time_set = f'{self.h_time.get()}:{self.m_time.get()}'
-        PutInfoPage.list_time.insert(END, time_set)
-        nofication_show(time_set, PutInfoPage.list_time)
+        PutInfoPage.list_time.insert(END, f"{SetTime.order}-{time_set}")
         self.pop_time.destroy()
 
 

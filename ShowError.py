@@ -52,12 +52,16 @@ def stamp_login(user, password):
         record_csv.writerow([user, password, now_day, now_hours])
 
 
-def nofication_show(time_set, time_list):
+def eat_med(list_time):
+    messagebox.showinfo('เตือน', 'กินยาได้แล้ว')
+    list_time.delete(0)
+
+
+def nofication_show(time_set, root, list_time):
     time_set = datetime.strptime(time_set, "%H:%M")
     now_time = datetime.strptime(
         f'{now.strftime("%H")}:{now.strftime("%M")}', '%H:%M')
     result_second_set = time_set.minute*60 + time_set.hour * 3600
     result_second_now = now_time.minute*60 + now_time.hour * 3600
     diff_time = (result_second_set-result_second_now)*1000
-    Tk().after(diff_time, lambda: messagebox.showinfo('เตือน', 'กินยาได้แล้ว'))
-    time_list.delete(0)
+    root.after(diff_time, lambda: eat_med(list_time))
