@@ -106,10 +106,11 @@ class Page2(BasePage):
         self.back_btn = Button(self.Frame, text='Back', font='18')
         self.sub_title = Label(
             self.sub_frame, text='การแจ้งเตือนยา', font='Helvetica 15')
-        self.add_time = Button(self.sub_frame, text='เพิ่มเวลาแจ้งเตือน',
-                               font='Helvetica 15', command=lambda:  SetTime().run)
-        self.mark_time = Button(
+        self.add_btn = Button(self.sub_frame, text='+',
+                              font='Helvetica 15', command=lambda:  SetTime().run)
+        self.mark_btn = Button(
             self.sub_frame, text='ตั้งเวลา', font='Helvetica 15', command=self.sort_time)
+        self.del_btn = Button(self.sub_frame, text='-', font='Helvetica 15')
         self.list_time = Listbox(
             self.sub_frame, height=5, width=30, font='Helvetica 15')
         self.scrollbar = Scrollbar(
@@ -136,7 +137,7 @@ class Page2(BasePage):
         self.back_btn.bind('<Button-1>', on_click)
         self.widget_subframe()
 
-    def bmi(self, *args):
+    def bmi(self):
         weight = float(self.Entry['weightvar']['var'].get()) if float(
             self.Entry['weightvar']['var'].get()) % 100 != 0 else int(self.Entry['weightvar']['var'].get())
         height = float(self.Entry['heightvar']['var'].get()) if float(
@@ -145,22 +146,24 @@ class Page2(BasePage):
 
     def widget_subframe(self):
         self.sub_frame.place(x=189, y=20)
-        self.sub_title.grid(row=0, columnspan=2, pady=10)
-        self.list_time.grid(row=1, columnspan=2)
-        self.scrollbar.grid(row=1, column=2, sticky='wns')
-        self.add_time.grid(row=2, columnspan=1, sticky='we')
-        self.mark_time.grid(row=2, column=1, sticky='w')
+        self.sub_title.grid(row=0, columnspan=4, pady=10)
+        self.list_time.grid(row=1, columnspan=4)
+        self.scrollbar.grid(row=1, column=4, sticky='wns')
+        self.add_btn.grid(row=2, column=0, sticky='we')
+        self.del_btn.grid(row=2, column=1, sticky='we')
+        self.del_btn.bind('<Button-1>',
+                          lambda e: self.list_time.delete(self.list_time.curselection()[0]))
+        self.mark_btn.grid(row=2, column=2, sticky='w')
 
     def sort_time(self):
         sort_clock = []
         for i in range(SetTime.order):
-            sort_clock.append(self.list_time.get(i).replace(f'{i+1}-', ''))
+            sort_clock.append(self.list_time.get(i))
         sort_clock.sort()
-        print(sort_clock)
-        for i, e in enumerate(sort_clock):
+        for i in sort_clock:
             self.list_time.delete(0)
-            print(e)
-            self.list_time.insert(END, f'{i+1}-{e}')
+            self.list_time.insert(END, f'{i}')
+        nofication_show(sort_clock, self.Frame, self.list_time)
 
 
 class SetTime:
@@ -173,7 +176,7 @@ class SetTime:
                           'เวลาทานยา': {'pos': (319, 58), 'size': (118, 29), 'font': 16},
                           'ชื่อยา': {'pos': (25, 138), 'size': (61, 29), 'font': 16},
                           'ปริมาณยาที่ทาน': {'pos': (24, 230), 'size': (159, 29), 'font': 16},
-                          'mg': {'pos': (192, 268), 'size': (53, 29), 'font': 16}}
+                          'mg': {'pos': (130, 268), 'size': (53, 29), 'font': 16}}
         self.sub_entry = {'โรค': {'pos': (30, 90), 'size': (205, 35), 'var': StringVar()},
                           'ชื่อยา': {'pos': (29, 170), 'size': (285, 35), 'var': StringVar()},
                           'ปริมานยา': {'pos': (30, 262), 'size': (104, 35), 'var': IntVar()}
@@ -212,7 +215,7 @@ class SetTime:
 
     def submit_click(self, e):
         time_set = f'{self.h_time.get()}:{self.m_time.get()}'
-        PutInfoPage.list_time.insert(END, f"{SetTime.order}-{time_set}")
+        PutInfoPage.list_time.insert(END, f"{time_set}")
         self.pop_time.destroy()
 
 
