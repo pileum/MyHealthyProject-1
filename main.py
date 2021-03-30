@@ -137,7 +137,7 @@ class Page2(BasePage):
         self.back_btn.bind('<Button-1>', on_click)
         self.widget_subframe()
 
-    def bmi(self,e):
+    def bmi(self, e):
         weight = float(self.Entry['weightvar']['var'].get()) if float(
             self.Entry['weightvar']['var'].get()) % 100 != 0 else int(self.Entry['weightvar']['var'].get())
         height = float(self.Entry['heightvar']['var'].get()) if float(
