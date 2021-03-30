@@ -1,6 +1,6 @@
 from tkinter import *
 import xlsxwriter
-import xlrd
+
 
 
 def write_Excel():

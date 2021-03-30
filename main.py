@@ -1,8 +1,10 @@
 from abc import ABC, abstractmethod
 from tkinter import *
-from ShowError import *
+from Module import *
 from tkinter import ttk
 from datetime import datetime
+import xlsxwriter
+from pandas import *
 
 
 def on_click(e):
@@ -12,7 +14,7 @@ def on_click(e):
         index -= 1
         all_page[index].pack()
     elif e.widget['text'] == 'Sign up':
-        lambda: SignUp().run
+        SignUp().run
 
 
 def command_on_click():
@@ -168,6 +170,7 @@ class Page2(BasePage):
 
 class SetTime:
     order = 0
+    time_set = str
 
     def __init__(self):
         self.pop_time = Toplevel(height=356, width=536)
@@ -214,9 +217,14 @@ class SetTime:
         self.widget()
 
     def submit_click(self, e):
-        time_set = f'{self.h_time.get()}:{self.m_time.get()}'
-        PutInfoPage.list_time.insert(END, f"{time_set}")
+        self.get_med
+        self.time_set = f'{self.h_time.get()}:{self.m_time.get()}'
+        PutInfoPage.list_time.insert(END, f"{self.time_set}")
         self.pop_time.destroy()
+
+    def get_med(self):
+        name_med = self.sub_entry['ชื่อยา']['var'].get()
+        roak = self.sub_entry['โรค']['var'].get()
 
 
 class SignUp(BasePage):
@@ -237,6 +245,7 @@ class SignUp(BasePage):
             'Password': {'pos': (129, 293), 'size': (147, 30), 'var': StringVar()},
             'Confirm': {'pos': (314, 293), 'size': (147, 30), 'var': StringVar()}
         }
+        self.data = {'ชื่อ': [], 'นามสกุล': []}
         self.Accept = Button(self.Frame, text='Accept',
                              font='15', command=self.Backup)
         self.Back = Button(self.Frame, text='Back', font='15',
