@@ -71,4 +71,4 @@ def nofication_show(all_time, root, list_time):
         result_second_now = now_time.minute * 60 + now_time.hour * 3600
         diff_time = (result_second_set - result_second_now) * 1000
         root.after(diff_time, lambda: eat_med(list_time))
-        nofication_show(all_time[:a], root, list_time)
+        root.after(diff_time,nofication_show(all_time[:a], root, list_time))
