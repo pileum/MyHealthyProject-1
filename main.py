@@ -3,8 +3,8 @@ from tkinter import *
 from Module import *
 from tkinter import ttk
 from datetime import datetime
-import xlsxwriter
-from pandas import *
+# import xlsxwriter
+# from pandas import *
 
 
 def on_click(e):
@@ -108,6 +108,8 @@ class Page2(BasePage):
         self.back_btn = Button(self.Frame, text='Back', font='18')
         self.sub_title = Label(
             self.sub_frame, text='การแจ้งเตือนยา', font='Helvetica 15')
+        self.time = Label(self.sub_frame, font='consolas 20',
+                          background='white')
         self.add_btn = Button(self.sub_frame, text='+',
                               font='Helvetica 15', command=lambda:  SetTime().run)
         self.mark_btn = Button(
@@ -139,13 +141,6 @@ class Page2(BasePage):
         self.back_btn.bind('<Button-1>', on_click)
         self.widget_subframe()
 
-    def bmi(self, e):
-        weight = float(self.Entry['weightvar']['var'].get()) if float(
-            self.Entry['weightvar']['var'].get()) % 100 != 0 else int(self.Entry['weightvar']['var'].get())
-        height = float(self.Entry['heightvar']['var'].get()) if float(
-            self.Entry['heightvar']['var'].get()) % 100 != 0 else int(self.Entry['heightvar']['var'].get())
-        self.bmi_result['text'] = format(weight/((height/100)**2), '.2f')
-
     def widget_subframe(self):
         self.sub_frame.place(x=189, y=20)
         self.sub_title.grid(row=0, columnspan=4, pady=10)
@@ -156,16 +151,26 @@ class Page2(BasePage):
         self.del_btn.bind('<Button-1>',
                           lambda e: self.list_time.delete(self.list_time.curselection()[0]))
         self.mark_btn.grid(row=2, column=2, sticky='w')
+        self.time.grid(row=3, columnspan=4, ipady=30)
+
+    def bmi(self, e):
+        weight = float(self.Entry['weightvar']['var'].get()) if float(
+            self.Entry['weightvar']['var'].get()) % 100 != 0 else int(self.Entry['weightvar']['var'].get())
+        height = float(self.Entry['heightvar']['var'].get()) if float(
+            self.Entry['heightvar']['var'].get()) % 100 != 0 else int(self.Entry['heightvar']['var'].get())
+        self.bmi_result['text'] = format(weight/((height/100)**2), '.2f')
 
     def sort_time(self):
         sort_clock = []
         for i in range(SetTime.order):
-            sort_clock.append(self.list_time.get(i))
+            if self.list_time.get(i) != '':
+                sort_clock.append(self.list_time.get(i))
         sort_clock.sort()
         for i in sort_clock:
             self.list_time.delete(0)
             self.list_time.insert(END, f'{i}')
-        nofication_show(sort_clock, self.Frame, self.list_time)
+        self.sub_frame.after(1000, nofication(
+            text_time=self.time, root=self.sub_frame, list_time=self.list_time, sort_clock=sort_clock))
 
 
 class SetTime:

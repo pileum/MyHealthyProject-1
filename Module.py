@@ -56,19 +56,13 @@ def eat_med(list_time):
     list_time.delete(0)
 
 
-def nofication_show(all_time, root, list_time):
-    all_time.sort(reverse=True)
-    a = len(all_time) - 1
-    if a < 0:
-        return
-    else:
-        print(all_time, ':', all_time[a])
-        time_set = datetime.strptime(all_time[a], "%H:%M")
-        now_time = datetime.strptime(
-            f'{now.strftime("%H")}:{now.strftime("%M")}', '%H:%M')
-        result_second_set = time_set.minute * 60 + time_set.hour * 3600
-        result_second_now = now_time.minute * 60 + now_time.hour * 3600
-        diff_time = (result_second_set - result_second_now) * 1000
-        root.after(diff_time, lambda: eat_med(list_time))
-        root.after(diff_time, nofication_show(
-            all_time[:a], root, list_time))
+def nofication(**var):
+    time_real = datetime.now()
+    print(time_real)
+    var['text_time']['text'] = time_real.strftime("%H:%M:%S")
+    if time_real.strftime("%H:%M") in var['sort_clock']:
+        messagebox.showinfo('เตือน', 'กินยาได้แล้ว')
+        var['list_time'].delete(0)
+        var['sort_clock'].pop(0)
+    var['root'].after(1000, lambda: noficattion(text_time=var['text_time'],
+                      root=var['root'], list_time=var['list_time'], sort_clock=var['sort_clock']))
