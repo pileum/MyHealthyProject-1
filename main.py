@@ -197,6 +197,8 @@ class SetTime:
             f'0{i}' if i < 10 else i for i in range(0, 24)), font='Helvetica 14', state='readonly')
         self.m_time = ttk.Combobox(self.pop_time, values=list(
             f'0{i}' if i < 10 else i for i in range(0, 60)), font='Helvetica 14', state='readonly')
+        self.drug_name_map_quantity = {}
+        self.drug = {}
 
     def widget(self):
         self.h_time.current(0)
@@ -222,14 +224,18 @@ class SetTime:
         self.widget()
 
     def submit_click(self, e):
-        self.get_med
+        self.get_med()
         self.time_set = f'{self.h_time.get()}:{self.m_time.get()}'
         PutInfoPage.list_time.insert(END, f"{self.time_set}")
         self.pop_time.destroy()
 
     def get_med(self):
-        name_med = self.sub_entry['ชื่อยา']['var'].get()
-        roak = self.sub_entry['โรค']['var'].get()
+        drug_name = self.sub_entry['ชื่อยา']['var'].get()
+        drug_time = self.time_set
+        disease_name = self.sub_entry['โรค']['var'].get()
+        self.drug_name_map_quantity['ชื่อยา'] = drug_name
+        self.drug_name_map_quantity['เวลาทานยา'] = drug_time
+        self.drug[disease_name] = self.drug_name_map_quantity
 
 
 class SignUp(BasePage):

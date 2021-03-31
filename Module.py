@@ -64,5 +64,5 @@ def nofication(**var):
         messagebox.showinfo('เตือน', 'กินยาได้แล้ว')
         var['list_time'].delete(0)
         var['sort_clock'].pop(0)
-    var['root'].after(1000, lambda: noficattion(text_time=var['text_time'],
+    var['root'].after(1000, lambda: nofication(text_time=var['text_time'],
                       root=var['root'], list_time=var['list_time'], sort_clock=var['sort_clock']))
